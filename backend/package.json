@@ -4,8 +4,10 @@
   "description": "Diary app backend — Google Drive & Dropbox proxy",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "NODE_ENV=development node server.js",
+    "start:cert": "NODE_ENV=cert node server.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development node --watch server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -1,7 +1,8 @@
-require('dotenv').config();
+const path = require('path');
+const NODE_ENV = process.env.NODE_ENV || 'development';
+require('dotenv').config({ path: path.join(__dirname, `.env.${NODE_ENV}`) });
 const fs = require('fs');
 const http = require('http');
-const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
@@ -11,10 +12,11 @@ const entriesRoutes = require('./routes/entries');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const APP_URL = process.env.APP_URL || `http://localhost:${PORT}`;
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.FRONTEND_URL || `http://localhost:${PORT}`,
+  origin: APP_URL,
   credentials: true,
 }));
 
@@ -25,7 +27,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false,
+    secure: APP_URL.startsWith('https'),
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
@@ -57,5 +59,5 @@ if (fs.existsSync(FRONTEND_DIST)) {
 
 // ── Start HTTP server ─────────────────────────────────────────────────────────
 http.createServer(app).listen(PORT, () => {
-  console.log(`Diary app running at http://localhost:${PORT}`);
+  console.log(`Diary app [${NODE_ENV}] running at ${APP_URL}`);
 });

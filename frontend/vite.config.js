@@ -8,7 +8,7 @@ export default defineConfig({
     https: false,
     proxy: {
       '/api': {
-        target: 'https://localhost:443',
+        target: process.env.VITE_API_URL || 'http://localhost:3001',
         changeOrigin: true,
         secure: false, // accept self-signed cert during dev
       },

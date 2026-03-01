@@ -13,16 +13,16 @@ router.get('/google', (req, res) => {
 router.get('/google/callback', async (req, res) => {
   const { code, error } = req.query;
   if (error || !code) {
-    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3001'}/?error=google_denied`);
+    return res.redirect(`${process.env.APP_URL || 'http://localhost:3001'}/?error=google_denied`);
   }
   try {
     const tokens = await exchangeGoogleCode(code);
     req.session.provider = 'google';
     req.session.tokens = tokens;
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3001'}/entries`);
+    res.redirect(`${process.env.APP_URL || 'http://localhost:3001'}/entries`);
   } catch (err) {
     console.error('Google callback error:', err);
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3001'}/?error=google_failed`);
+    res.redirect(`${process.env.APP_URL || 'http://localhost:3001'}/?error=google_failed`);
   }
 });
 
@@ -36,16 +36,16 @@ router.get('/dropbox', (req, res) => {
 router.get('/dropbox/callback', async (req, res) => {
   const { code, error } = req.query;
   if (error || !code) {
-    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3001'}/?error=dropbox_denied`);
+    return res.redirect(`${process.env.APP_URL || 'http://localhost:3001'}/?error=dropbox_denied`);
   }
   try {
     const tokens = await exchangeDropboxCode(code);
     req.session.provider = 'dropbox';
     req.session.tokens = tokens;
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3001'}/entries`);
+    res.redirect(`${process.env.APP_URL || 'http://localhost:3001'}/entries`);
   } catch (err) {
     console.error('Dropbox callback error:', err);
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3001'}/?error=dropbox_failed`);
+    res.redirect(`${process.env.APP_URL || 'http://localhost:3001'}/?error=dropbox_failed`);
   }
 });
 
