@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:label="Diary"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.Diary">
 
         <activity
             android:name=".MainActivity"

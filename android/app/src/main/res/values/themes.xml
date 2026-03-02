@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window theme for the app shell. Compose overrides all visual appearance
+         at runtime; this only affects the initial window before Compose renders. -->
+    <style name="Theme.Diary" parent="android:Theme.DeviceDefault.Light.NoActionBar" />
+</resources>

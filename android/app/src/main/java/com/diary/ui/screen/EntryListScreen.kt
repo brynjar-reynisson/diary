@@ -31,8 +31,8 @@ fun EntryListScreen(
     onLogout: () -> Unit,
 ) {
     val state by vm.entriesState.collectAsState()
-    val collapsedYears = remember { mutableStateSetOf<String>() }
-    val collapsedMonths = remember { mutableStateSetOf<String>() }
+    var collapsedYears by remember { mutableStateOf(emptySet<String>()) }
+    var collapsedMonths by remember { mutableStateOf(emptySet<String>()) }
 
     LaunchedEffect(Unit) { vm.loadEntries() }
 
@@ -92,8 +92,8 @@ fun EntryListScreen(
                                         year = year,
                                         collapsed = year in collapsedYears,
                                         onToggle = {
-                                            if (year in collapsedYears) collapsedYears.remove(year)
-                                            else collapsedYears.add(year)
+                                            collapsedYears = if (year in collapsedYears)
+                                                collapsedYears - year else collapsedYears + year
                                         }
                                     )
                                 }
@@ -106,8 +106,8 @@ fun EntryListScreen(
                                                 month = month,
                                                 collapsed = monthKey in collapsedMonths,
                                                 onToggle = {
-                                                    if (monthKey in collapsedMonths) collapsedMonths.remove(monthKey)
-                                                    else collapsedMonths.add(monthKey)
+                                                    collapsedMonths = if (monthKey in collapsedMonths)
+                                                        collapsedMonths - monthKey else collapsedMonths + monthKey
                                                 }
                                             )
                                         }
