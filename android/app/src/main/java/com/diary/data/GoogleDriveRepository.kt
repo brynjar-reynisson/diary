@@ -1,38 +1,27 @@
 package com.diary.data
 
-import android.content.Context
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
-import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File as DriveFile
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.auth.http.HttpCredentialsAdapter
+import com.google.auth.oauth2.AccessToken
+import com.google.auth.oauth2.GoogleCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 
-class GoogleDriveRepository(
-    context: Context,
-    account: GoogleSignInAccount,
-) : DiaryRepository {
+class GoogleDriveRepository(accessToken: String) : DiaryRepository {
 
     private val drive: Drive
 
     init {
-        val credential = GoogleAccountCredential.usingOAuth2(
-            context,
-            listOf(DriveScopes.DRIVE_FILE),
-        )
-        credential.selectedAccount = account.account
-
+        val credentials = GoogleCredentials.create(AccessToken(accessToken, null))
         drive = Drive.Builder(
             NetHttpTransport(),
             GsonFactory.getDefaultInstance(),
-            credential,
+            HttpCredentialsAdapter(credentials),
         ).setApplicationName("Diary").build()
     }
 

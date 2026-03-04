@@ -57,8 +57,11 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.lifecycle.viewmodel.compose)
 
-    // Google Sign-In + Drive
-    implementation(libs.play.services.auth)
+    // Google auth + Drive
+    implementation(libs.play.services.auth)           // AuthorizationClient
+    implementation(libs.credentials)                  // Credential Manager
+    implementation(libs.credentials.play.services.auth) // Credential Manager Play Services bridge
+    implementation(libs.googleid)                     // GetSignInWithGoogleOption
     implementation(libs.google.api.client.android)
     implementation(libs.google.api.services.drive)
 
