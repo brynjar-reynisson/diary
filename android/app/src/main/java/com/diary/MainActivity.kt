@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.lifecycleScope
 import com.diary.data.DropboxRepository
 import com.diary.data.GoogleDriveRepository
 import com.diary.ui.DiaryNavHost
@@ -18,8 +19,6 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.api.Scope
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.api.services.drive.DriveScopes
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -33,9 +32,7 @@ class MainActivity : ComponentActivity() {
                 .getAuthorizationResultFromIntent(result.data)
             val token = authResult.accessToken
             if (token != null) {
-                DiaryApplication.activeProvider = "google"
-                DiaryApplication.repository = GoogleDriveRepository(token)
-                googleAuthSuccess?.invoke()
+                activateGoogleProvider(token)
             } else {
                 googleAuthError?.invoke("No access token received")
             }
@@ -55,7 +52,7 @@ class MainActivity : ComponentActivity() {
             .build()
         val credentialManager = CredentialManager.create(this)
 
-        CoroutineScope(Dispatchers.Main).launch {
+        lifecycleScope.launch {
             try {
                 // Step 1: authenticate (who the user is)
                 credentialManager.getCredential(this@MainActivity, request)
@@ -65,6 +62,12 @@ class MainActivity : ComponentActivity() {
                 googleAuthError?.invoke(e.message ?: "Sign-in failed")
             }
         }
+    }
+
+    private fun activateGoogleProvider(token: String) {
+        DiaryApplication.activeProvider = "google"
+        DiaryApplication.repository = GoogleDriveRepository(token)
+        googleAuthSuccess?.invoke()
     }
 
     private fun requestDriveAuthorization() {
@@ -84,9 +87,7 @@ class MainActivity : ComponentActivity() {
                     // Already authorized — use token directly
                     val token = authResult.accessToken
                     if (token != null) {
-                        DiaryApplication.activeProvider = "google"
-                        DiaryApplication.repository = GoogleDriveRepository(token)
-                        googleAuthSuccess?.invoke()
+                        activateGoogleProvider(token)
                     } else {
                         googleAuthError?.invoke("No access token received")
                     }

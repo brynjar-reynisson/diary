@@ -1,4 +1,5 @@
 const { google } = require('googleapis');
+const { Readable } = require('stream');
 
 const SCOPES = ['https://www.googleapis.com/auth/drive.file'];
 
@@ -142,7 +143,6 @@ function createClient(tokens) {
     const yearId = await findOrCreateFolder(year, diaryId);
     const monthId = await findOrCreateFolder(month, yearId);
 
-    const { Readable } = require('stream');
     const stream = Readable.from([content]);
 
     await drive.files.create({

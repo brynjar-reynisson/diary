@@ -48,7 +48,7 @@ class DropboxRepository(accessToken: String) : DiaryRepository {
                         if (!fileMeta.name.endsWith(".txt")) continue
                         val day = fileMeta.name.removePrefix("entry-").substringBefore("-")
                         result[year]!![month]!!.add(
-                            DiaryEntry(year, month, day, fileMeta.name, "diary/$year/$month/${fileMeta.name}")
+                            DiaryEntry(year, month, day, fileMeta.name)
                         )
                     }
                     result[year]!![month]!!.sortBy { it.filename }
@@ -59,9 +59,8 @@ class DropboxRepository(accessToken: String) : DiaryRepository {
 
     override suspend fun getEntryContent(entry: DiaryEntry): String =
         withContext(Dispatchers.IO) {
-            val path = "/$DIARY_ROOT/${entry.year}/${entry.month}/${entry.filename}"
             val out = ByteArrayOutputStream()
-            client.files().download(path).download(out)
+            client.files().download("$DIARY_ROOT/${entry.year}/${entry.month}/${entry.filename}").download(out)
             out.toString("UTF-8")
         }
 
@@ -81,6 +80,6 @@ class DropboxRepository(accessToken: String) : DiaryRepository {
             client.files().uploadBuilder(path)
                 .uploadAndFinish(bytes.inputStream())
 
-            DiaryEntry(year, month, day, filename, "diary/$year/$month/$filename")
+            DiaryEntry(year, month, day, filename)
         }
 }

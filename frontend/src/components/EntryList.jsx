@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api.js';
 
@@ -81,7 +81,7 @@ export default function EntryList() {
   if (error) return <p style={styles.error}>Error: {error}</p>;
   if (!entries) return <p style={{ color: '#888' }}>Loading entries…</p>;
 
-  const years = Object.keys(entries).sort((a, b) => b - a);
+  const years = useMemo(() => Object.keys(entries).sort((a, b) => b - a), [entries]);
 
   return (
     <div>

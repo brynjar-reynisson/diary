@@ -5,5 +5,6 @@ data class DiaryEntry(
     val month: String,
     val day: String,
     val filename: String,
-    val path: String,
-)
+) {
+    val path: String get() = "diary/$year/$month/$filename"
+}

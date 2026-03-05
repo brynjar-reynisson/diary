@@ -86,7 +86,7 @@ class GoogleDriveRepository(accessToken: String) : DiaryRepository {
                     for (f in files) {
                         val day = f.name.removePrefix("entry-").substringBefore("-")
                         result[year]!![month]!!.add(
-                            DiaryEntry(year, month, day, f.name, "diary/$year/$month/${f.name}")
+                            DiaryEntry(year, month, day, f.name)
                         )
                     }
                 }
@@ -136,6 +136,6 @@ class GoogleDriveRepository(accessToken: String) : DiaryRepository {
             )
             drive.files().create(meta, mediaContent).setFields("id").execute()
 
-            DiaryEntry(year, month, day, filename, "diary/$year/$month/$filename")
+            DiaryEntry(year, month, day, filename)
         }
 }

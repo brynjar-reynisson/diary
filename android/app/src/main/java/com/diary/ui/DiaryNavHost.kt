@@ -71,7 +71,7 @@ fun DiaryNavHost(activity: MainActivity) {
             val day = filename.removePrefix("entry-").substringBefore("-")
             EntryViewScreen(
                 vm = vm,
-                entry = DiaryEntry(year, month, day, filename, "diary/$year/$month/$filename"),
+                entry = DiaryEntry(year, month, day, filename),
                 onBack = { navController.popBackStack() }
             )
         }

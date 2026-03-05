@@ -1,7 +1,6 @@
 package com.diary
 
 import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import com.diary.data.DiaryRepository
 import com.diary.data.DropboxRepository
@@ -18,21 +17,22 @@ class DiaryApplication : Application() {
         var repository: DiaryRepository? = null
     }
 
+    private val prefs: SharedPreferences by lazy {
+        getSharedPreferences("diary_prefs", MODE_PRIVATE)
+    }
+
     override fun onCreate() {
         super.onCreate()
         instance = this
     }
 
-    fun getPrefs(): SharedPreferences =
-        getSharedPreferences("diary_prefs", Context.MODE_PRIVATE)
-
     fun saveDropboxToken(token: String) {
-        getPrefs().edit().putString("dropbox_token", token).apply()
+        prefs.edit().putString("dropbox_token", token).apply()
     }
 
-    fun loadDropboxToken(): String? = getPrefs().getString("dropbox_token", null)
+    fun loadDropboxToken(): String? = prefs.getString("dropbox_token", null)
 
     fun clearDropboxToken() {
-        getPrefs().edit().remove("dropbox_token").apply()
+        prefs.edit().remove("dropbox_token").apply()
     }
 }
