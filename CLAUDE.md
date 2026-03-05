@@ -95,6 +95,16 @@ This SHA-1 is registered in Google Cloud Console for package `com.diary`.
 
 **Min Android version:** API 26 (Android 8.0)
 
+**Google Sign-In (Credential Manager flow) requires two OAuth clients in Google Cloud Console:**
+- Android client (type 1) — package `com.diary` + SHA-1 fingerprint
+- Web application client (type 3) — provides `default_web_client_id` used by `GetSignInWithGoogleOption`
+
+Both must appear in the `oauth_client` array in `google-services.json`. If the web client lands under `services.appinvite_service.other_platform_oauth_client` instead, move it into `oauth_client` — the plugin only generates `default_web_client_id` from there.
+
+To create the web client automatically: Firebase Console → Authentication → Sign-in method → enable Google.
+
+**`android.newDsl=false` must stay in `android/gradle.properties`** — setting it to `true` causes a class cast exception because the `google-services` plugin (4.4.2) still casts to the old `BaseExtension`. The deprecation warning is harmless until AGP 10.0.
+
 ---
 
 ## Coding & API Policy
