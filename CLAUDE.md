@@ -97,6 +97,15 @@ This SHA-1 is registered in Google Cloud Console for package `com.diary`.
 
 ---
 
+## Coding & API Policy
+
+When writing code, using SDKs, or API integrations:
+1. STOP before writing any import, install, or model initialization.
+2. VERIFY the latest package version, current API endpoint, and best practices.
+3. USE only current, non-deprecated APIs. DO NOT rely on training data for syntax.
+
+---
+
 ## Common Tasks
 
 **Commit and push:**

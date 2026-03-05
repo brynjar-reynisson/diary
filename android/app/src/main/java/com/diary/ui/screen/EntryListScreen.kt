@@ -145,7 +145,7 @@ private fun YearHeader(year: String, collapsed: Boolean, onToggle: () -> Unit) {
             color = MaterialTheme.colorScheme.onBackground,
         )
     }
-    Divider()
+    HorizontalDivider()
 }
 
 @Composable

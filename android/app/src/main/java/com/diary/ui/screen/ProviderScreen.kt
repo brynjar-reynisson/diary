@@ -88,11 +88,11 @@ fun ProviderScreen(
                 onClick = {
                     loading = true
                     errorMsg = null
-                    activity.googleSignInSuccess = {
+                    activity.googleAuthSuccess = {
                         loading = false
                         onAuthenticated()
                     }
-                    activity.googleSignInError = { msg ->
+                    activity.googleAuthError = { msg ->
                         loading = false
                         errorMsg = msg
                     }
